@@ -1,3 +1,6 @@
+//Build a function mergeSort that takes in an array and returns a sorted array, using a recursive merge sort methodology. 
+
+
 function merge (array1 , array2){
     let n = array1.length + array2.length;
     let mergedList = [];
