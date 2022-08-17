@@ -29,6 +29,69 @@ class Tree{
         node.right = this.buildTree(array,middle+1,end);
         return node;
     }
+
+    insert(value,node=this.root){
+        if(value > node.value){
+            if(node.right === null){
+                const newNode = new Node(value);
+                node.right = newNode;
+                
+            }else{
+                this.insert(value,node.right);
+            }
+        }else{
+            if(node.left === null){
+                const newNode = new Node(value);
+                node.left = newNode;
+            }else{
+                this.insert(value,node.left);
+            } 
+        }
+    }
+
+    find(value,node=this.root){
+        if(node === null){
+            return -1;
+        }
+
+        if(node.value === value){
+            return node;
+        }
+
+        if(value > node.value){
+            return this.find(value,node.right);
+        }else{
+            return this.find(value,node.left);
+        } 
+    }
+
+    height(node){
+        if(node === null){
+            return -1;
+        }
+
+        if(root === null){
+            throw Error('Node is not Found');
+        }
+
+        return 1 + Math.max(this.height(node.right),this.height(node.left));
+    }
+
+    depth(node,root = this.root){
+        if(root === node){
+            return 0;
+        }
+
+        if(root === null){
+            throw Error('Node is not Found');
+        }
+
+        if(node.value > root.value){
+            return 1+ this.depth(node,root.right)
+        }else{
+            return 1+ this.depth(node,root.left);
+        }
+    }
 }
 
 
@@ -36,5 +99,6 @@ class Tree{
 
 
 
-const tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
-console.log(tree);
+const tree = new Tree([1, 2,4,5,6,7]);
+const node = tree.find(2);
+
