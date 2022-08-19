@@ -73,11 +73,6 @@ class Tree{
         if(node === null){
             return -1;
         }
-
-        if(root === null){
-            throw Error('Node is not Found');
-        }
-
         return 1 + Math.max(this.height(node.right),this.height(node.left));
     }
 
@@ -114,34 +109,64 @@ class Tree{
     }
 
 
-    preOrder(root=this.root,preOrderData=this.preOrderData){
+    preOrder(root=this.root){
         if(root === null){
             return;
         }
-        preOrderData.push(root.value);
+        if(root === this.root){
+            this.preOrderData = [];
+        }
+        this.preOrderData.push(root.value);
         this.preOrder(root.left);
         this.preOrder(root.right);
-        return preOrderData;
+
+        return this.preOrderData;
     }
 
-    inOrder(root=this.root,inOrderData=this.inOrderData){
+    inOrder(root=this.root){
         if(root === null){
             return;
         }
+        if(root === this.root){
+            this.inOrderData = [];
+        }
         this.inOrder(root.left);
-        inOrderData.push(root.value);
+        this.inOrderData.push(root.value);
         this.inOrder(root.right);
-        return inOrderData;
+        return this.inOrderData;
     }
 
     postOrder(root=this.root,postOrderData=this.postOrderData){
         if(root === null){
             return;
         }
+
+        if(root === this.root){
+            this.postOrderData = [];
+        }
+
         this.postOrder(root.left);
         this.postOrder(root.right);
-        postOrderData.push(root.value);
-        return postOrderData;
+        this.postOrderData.push(root.value);
+        return this.postOrderData;
+    }
+
+    isBalanced(root=this.root){
+        if(root===null){
+            return 0;
+        }
+
+        if( !(Math.abs(this.height(root.right) - this.height(root.left) <= 1))){
+            return false;
+        }
+
+        return true;
+    }
+
+    reBalance(){
+        const data = this.inOrder();
+        node = this.buildTree(data);
+        this.root = node;
     }
 
 
@@ -176,5 +201,6 @@ const tree = new Tree([1,2,3]);
 console.log(tree.inOrder());
 console.log(tree.postOrder());
 console.log(tree.preOrder());
+console.log(tree.isBalanced());
 
 
