@@ -14,6 +14,10 @@ class Tree{
         let node = new Node();
         node = this.buildTree(uniqueChars);
         this.root = node;
+
+        this.preOrderData = [];
+        this.inOrderData = [];
+        this.postOrderData = [];
     }
 
 
@@ -92,6 +96,73 @@ class Tree{
             return 1+ this.depth(node,root.left);
         }
     }
+
+    levelOrder(root=this.root){
+        let result = [];
+        let queue = [];
+
+        queue.push(root);
+
+        while(!(queue.length === 0)){
+            result.push(queue[0].value);
+            if(!(queue[0].left === null)) queue.push(queue[0].left);
+            if(!(queue[0].right === null)) queue.push(queue[0].right);
+            queue.shift();
+        }
+
+        return result;
+    }
+
+
+    preOrder(root=this.root,preOrderData=this.preOrderData){
+        if(root === null){
+            return;
+        }
+        preOrderData.push(root.value);
+        this.preOrder(root.left);
+        this.preOrder(root.right);
+        return preOrderData;
+    }
+
+    inOrder(root=this.root,inOrderData=this.inOrderData){
+        if(root === null){
+            return;
+        }
+        this.inOrder(root.left);
+        inOrderData.push(root.value);
+        this.inOrder(root.right);
+        return inOrderData;
+    }
+
+    postOrder(root=this.root,postOrderData=this.postOrderData){
+        if(root === null){
+            return;
+        }
+        this.postOrder(root.left);
+        this.postOrder(root.right);
+        postOrderData.push(root.value);
+        return postOrderData;
+    }
+
+
+
+    // delete(node,root = this.root){
+    //     if(root === null){
+    //         throw Error('Node is not Found');
+    //     }
+
+    //     if(root === node){
+    //        return null;
+    //     }
+
+    //     if(node.value > root.value){
+    //         node.right =  this.delete(node,root.right)
+    //     }else{
+    //         node.left =  this.delete(node,root.left);
+    //     }
+
+    //     return root;
+    // }
 }
 
 
@@ -99,6 +170,11 @@ class Tree{
 
 
 
-const tree = new Tree([1, 2,4,5,6,7]);
-const node = tree.find(2);
+const tree = new Tree([1,2,3]);
+
+
+console.log(tree.inOrder());
+console.log(tree.postOrder());
+console.log(tree.preOrder());
+
 
