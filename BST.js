@@ -20,7 +20,6 @@ class Tree{
         this.postOrderData = [];
     }
 
-
     buildTree(array,start=0,end=array.length-1){
         if(start > end){
             return null;
@@ -39,9 +38,8 @@ class Tree{
             if(node.right === null){
                 const newNode = new Node(value);
                 node.right = newNode;
-                
             }else{
-                this.insert(value,node.right);
+                this.insert(value,node.right);    
             }
         }else{
             if(node.left === null){
@@ -165,29 +163,60 @@ class Tree{
 
     reBalance(){
         const data = this.inOrder();
-        node = this.buildTree(data);
+        const node = this.buildTree(data);
         this.root = node;
     }
 
+    next(node){
+        while(node.left !== null){
+            node = node.left; 
+        }
+        return node;
+    }
 
+    deleteNode(value,node=this.root){
+        if(node === null){
+            return node;
+        }
 
-    // delete(node,root = this.root){
-    //     if(root === null){
-    //         throw Error('Node is not Found');
-    //     }
+        if(value > node.value){
+            node.right = this.deleteNode(value,node.right);
+        }
 
-    //     if(root === node){
-    //        return null;
-    //     }
+        if(value < node.value){
+            node.left = this.deleteNode(value,node.left);
+        }
 
-    //     if(node.value > root.value){
-    //         node.right =  this.delete(node,root.right)
-    //     }else{
-    //         node.left =  this.delete(node,root.left);
-    //     }
+        if(value === node.value){
+            //has no child
+            if(node.left === null && node.right === null){
+                return null;
+            }
 
-    //     return root;
-    // }
+            // has one child 
+            if(node.left === null){
+                return node.right;
+            }else if(node.right === null){
+                return node.left;
+            }
+
+            //has two child
+            const nextValue  = this.next(node.right).value;
+            node.value = nextValue;
+            node.right = this.deleteNode(nextValue,node.right);
+        }
+        return node;
+    }
+
+    prettyPrint(node=this.root, prefix = '', isLeft = true){
+        if(node.right !== null) {
+            this.prettyPrint(node.right, `${prefix}${isLeft ? '│   ' : '    '}`, false);
+        }
+        console.log(`${prefix}${isLeft ? '└── ' : '┌── '}${node.value}`);
+        if(node.left !== null) {
+            this.prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true);
+        }
+    }
 }
 
 
@@ -195,12 +224,24 @@ class Tree{
 
 
 
-const tree = new Tree([1,2,3]);
-
-
-console.log(tree.inOrder());
-console.log(tree.postOrder());
-console.log(tree.preOrder());
+const tree = new Tree([68,22,99,60,16,8,4,95,50,26]);
 console.log(tree.isBalanced());
+console.log(tree.inOrder());
+console.log(tree.preOrder());
+console.log(tree.postOrder());
+tree.insert(105);
+tree.insert(101);
+tree.insert(114);
+tree.insert(120);
+console.log(tree.isBalanced());
+tree.reBalance();
+console.log(tree.isBalanced());
+console.log(tree.inOrder());
+console.log(tree.preOrder());
+console.log(tree.postOrder());
+
+
+
+
 
 
